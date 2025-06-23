@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block title %}Trang Quản trị{% endblock %}
+{% block content %}
+  <h4>Danh sách người dùng</h4>
+  <table class="table table-bordered table-sm">
+    <thead class="table-light">
+      <tr>
+        <th>Tên đăng nhập</th>
+        <th>Trạng thái</th>
+        <th>Ngày tạo</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.username }}</td>
+        <td>{{ 'Bị khóa' if u.is_locked else 'Hoạt động' }}</td>
+        <td>{{ u.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td>
+          <a href="/admin/unlock/{{ u.id }}" class="btn btn-sm btn-success">Mở khóa</a>
+          <a href="/admin/delete/{{ u.id }}" class="btn btn-sm btn-danger">Xóa</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h4 class="mt-4">Lịch sử đăng nhập</h4>
+  <table class="table table-bordered table-sm">
+    <thead class="table-light">
+      <tr>
+        <th>Hash tài khoản</th>
+        <th>Thời gian</th>
+        <th>IP</th>
+        <th>Kết quả</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      <tr>
+        <td>{{ log.username_hash }}</td>
+        <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td>{{ log.ip_address }}</td>
+        <td>{{ 'Thành công' if log.success else 'Thất bại' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
