@@ -20,6 +20,33 @@
 │
 └── static/                  # CSS, JS, ảnh (nếu có)
 ```
+# SQL-database
+```
+-- Tạo CSDL
+CREATE DATABASE FlaskAuth;
+GO
+USE FlaskAuth;
+
+-- Bảng người dùng
+CREATE TABLE NguoiDung (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    username_hash VARCHAR(64) NOT NULL UNIQUE,
+    password_encrypted VARCHAR(256) NOT NULL,
+    salt VARCHAR(32) NOT NULL,
+    fail_count INT DEFAULT 0,
+    is_locked BIT DEFAULT 0,
+    is_admin BIT DEFAULT 0
+);
+
+-- Bảng lịch sử đăng nhập
+CREATE TABLE LichSuDangNhap (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    username_hash VARCHAR(64),
+    ip_address VARCHAR(45),
+    success BIT,
+    timestamp DATETIME DEFAULT GETDATE()
+);
+```
 # Nội dung file .env
 ```
 DB_SERVER=localhost
